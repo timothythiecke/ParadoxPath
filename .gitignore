@@ -81,3 +81,4 @@ $RECYCLE.BIN/
 # Own additions
 *.sdf
 */Debug/
+*.opensdf
