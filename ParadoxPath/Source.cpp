@@ -276,6 +276,17 @@ int FindPath(const int nStartX, const int nStartY,
 
 int main()
 {
+#define PARADOX
+
+#ifdef PARADOX
+	unsigned char pMap[] = { 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1 };
+	int pOutBuffer[12];
+	LogResult(0, FindPath(0, 0, 1, 2, pMap, 4, 3, pOutBuffer, 12), pOutBuffer);
+
+	unsigned char pMap2[] = { 0, 0, 1, 0, 1, 1, 1, 0, 1 };
+	int pOutBuffer2[7];
+	LogResult(3 * 2 + 0, FindPath(2, 0, 0, 2, pMap2, 3, 3, pOutBuffer2, 7), pOutBuffer2);
+#else
 	// Case #0
 	int case_zero_result = FindPath(0, 0, 3, 2, gCaseZeroMap, 4, 3, gCaseZeroBuffer, gCaseZeroBufferSize);
 	LogResult(4 * 0 + 0, case_zero_result, gCaseZeroBuffer);
@@ -295,10 +306,11 @@ int main()
 	// Case #4 - output buffer is too small to hold the output buffer
 	int small_buffer_result = FindPath(0, 0, 3, 3, gSmallBufferMap, 4, 4, gSmallBufferBuffer, gSmallBufferBufferSize);
 	LogResult(0, small_buffer_result, gSmallBufferBuffer);
-	
+
 	// Case #5 - huge map
 	int huge_map_result = FindPath(0, 0, 0, 19, gHugeMap, 20, 20, gHugeBuffer, gHugeBufferSize);
 	LogResult(0, huge_map_result, gHugeBuffer);
-
+#endif
+	
 	return 0;
 }
