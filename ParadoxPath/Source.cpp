@@ -276,42 +276,29 @@ int FindPath(const int nStartX, const int nStartY,
 
 int main()
 {
+	// Case #0
+	int case_zero_result = FindPath(0, 0, 3, 2, gCaseZeroMap, 4, 3, gCaseZeroBuffer, gCaseZeroBufferSize);
+	LogResult(4 * 0 + 0, case_zero_result, gCaseZeroBuffer);
+
 	// Case #1
-	unsigned char pMap[] = { 1,1,1,1,0,1,0,1,0,1,1,1 };
-	int pOutBuffer[12];
-	int ret = FindPath(0, 0, 3, 2, pMap, 4, 3, pOutBuffer, 12);
+	int case_one_result = FindPath(2, 0, 0, 2, gCaseOneMap, 3, 3, gCaseOneBuffer, gCaseOneBufferSize);
+	LogResult(3 * 0 + 2, case_one_result, gCaseOneBuffer);
 
-	LogResult(4 * 0 + 0, ret, pOutBuffer);
+	// Case #2 - test with a larger map
+	int result = FindPath(0, 0, 4, 5, gLargerMap, 5, 6, gLargerBuffer, gLargerBufferSize);
+	LogResult(0, result, gLargerBuffer);
 
-	// Case #2
-	unsigned char pMap2[] = { 0, 0, 1, 0, 1, 1, 1, 0, 1 };
-	int pOutBuffer2[7];
-	int ret2 = FindPath(2, 0, 0, 2, pMap2, 3, 3, pOutBuffer2, 7);
+	// Case #3 - map with only one available path, but we can't move diagonally so it is invalid
+	int one_available_result = FindPath(0, 0, 1, 1, gOneAvailableMap, 2, 2, gOneAvialableBuffer, gOneAvailableBufferSize);
+	LogResult(0, one_available_result, gOneAvialableBuffer);
 
-	LogResult(3 * 0 + 2, ret2, pOutBuffer2);
+	// Case #4 - output buffer is too small to hold the output buffer
+	int small_buffer_result = FindPath(0, 0, 3, 3, gSmallBufferMap, 4, 4, gSmallBufferBuffer, gSmallBufferBufferSize);
+	LogResult(0, small_buffer_result, gSmallBufferBuffer);
 	
-	// Case #3
-	unsigned char larger_test[] =
-	{
-		1,1,1,1,0,
-		0,0,0,1,0,
-		0,0,0,1,0,
-		1,1,1,1,0,
-		1,0,0,0,0,
-		1,1,1,1,1
-	};
-	int larger_buffer[20];
-	int result = FindPath(0, 0, 4, 5, larger_test, 5, 6, larger_buffer, 20);
-	LogResult(0, result, larger_buffer);
-
-	// Case #4 - only one available node
-	unsigned char one_available[] = { 1, 0, 0, 0 };
-	int one_available_buffer[4];
-	int one_available_result = FindPath(0, 0, 1, 1, one_available, 2, 2, one_available_buffer, 4);
-	LogResult(0, one_available_result, one_available_buffer);
-
-	// Case #5 - output buffer is too small to hold the output buffer
-	//unsigned char 
+	// Case #5 - huge map
+	int huge_map_result = FindPath(0, 0, 0, 19, gHugeMap, 20, 20, gHugeBuffer, gHugeBufferSize);
+	LogResult(0, huge_map_result, gHugeBuffer);
 
 	return 0;
 }
