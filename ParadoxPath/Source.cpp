@@ -2,6 +2,8 @@
 #include <set>
 #include <vector>
 
+#include "Maps.h"
+
 struct Node
 {
 	Node() :
@@ -253,7 +255,7 @@ int FindPath(const int nStartX, const int nStartY,
 
 	// If the path is larger than the amount of elements the output buffer may hold, we can not reach the target
 	// Terminate
-	if (path.size() > nOutBufferSize)
+	if ((int)path.size() > nOutBufferSize)
 	{
 		delete[] nodes;
 		return -1;
@@ -309,7 +311,7 @@ int main()
 	LogResult(0, one_available_result, one_available_buffer);
 
 	// Case #5 - output buffer is too small to hold the output buffer
-
+	//unsigned char 
 
 	return 0;
 }
