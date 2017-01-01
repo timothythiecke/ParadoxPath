@@ -2,7 +2,10 @@
 #include <set>
 #include <vector>
 
+#define PARADOX
+#ifndef PARADOX
 #include "Maps.h"
+#endif
 
 struct Node
 {
@@ -276,8 +279,6 @@ int FindPath(const int nStartX, const int nStartY,
 
 int main()
 {
-#define PARADOX
-
 #ifdef PARADOX
 	unsigned char pMap[] = { 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1 };
 	int pOutBuffer[12];
