@@ -1,8 +1,9 @@
 #include <iostream>
 #include <set>
 #include <vector>
+#include <limits>
 
-#define PARADOX
+//#define PARADOX
 #ifndef PARADOX
 #include "Maps.h"
 #endif
@@ -18,7 +19,7 @@ struct Node
 		index(0),
 		traversable(false),
 		visited(false),
-		distance(UINT32_MAX)
+		distance(std::numeric_limits<unsigned int>::infinity())
 	{
 		
 	}
@@ -218,7 +219,7 @@ int FindPath(const int nStartX, const int nStartY,
 		}
 
 		// Select the node with the smallest tentative distance to be marked as the next current node
-		unsigned int max = INT32_MAX;
+		unsigned int max = std::numeric_limits<unsigned int>::infinity();
 		for (Node* node : unvisited_nodes)
 		{
 			if (node->distance < max)
@@ -229,7 +230,7 @@ int FindPath(const int nStartX, const int nStartY,
 		}
 
 		// Smallest tentative distance unchanged? unreachable path detected
-		if (max == INT32_MAX)
+		if (max == std::numeric_limits<unsigned int>::infinity())
 			terminate_algorithm_unreachable = true;
 
 		// Erase from the set and mark visited
@@ -256,38 +257,27 @@ int FindPath(const int nStartX, const int nStartY,
 		pathing_node = pathing_node->previous;
 	}
 
-	// If the path is larger than the amount of elements the output buffer may hold, we can not reach the target
-	// Terminate
-	if ((int)path.size() > nOutBufferSize)
-	{
-		delete[] nodes;
-		return -1;
-	}
-
 	// Then copy the sequence into the output buffer, and keep track of how many elements there are in the sequence
 	unsigned int push_index = 0;
-	for (const unsigned int i : path)
+	for (int i = 0; i < nOutBufferSize; ++i)
 	{
-		pOutBuffer[push_index++] = i;
+		pOutBuffer[push_index++] = path[i];
 	}
 	
 	delete[] nodes;
+
+	// If the path is larger than the amount of elements the output buffer may hold, we can not reach the target
+	// Terminate
+	if ((int)path.size() > nOutBufferSize)
+		return -1;
+
 	return push_index;
 }
 
 
-
+#ifndef PARADOX
 int main()
 {
-#ifdef PARADOX
-	unsigned char pMap[] = { 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1 };
-	int pOutBuffer[12];
-	LogResult(0, FindPath(0, 0, 1, 2, pMap, 4, 3, pOutBuffer, 12), pOutBuffer);
-
-	unsigned char pMap2[] = { 0, 0, 1, 0, 1, 1, 1, 0, 1 };
-	int pOutBuffer2[7];
-	LogResult(3 * 2 + 0, FindPath(2, 0, 0, 2, pMap2, 3, 3, pOutBuffer2, 7), pOutBuffer2);
-#else
 	// Case #0
 	int case_zero_result = FindPath(0, 0, 3, 2, gCaseZeroMap, 4, 3, gCaseZeroBuffer, gCaseZeroBufferSize);
 	LogResult(4 * 0 + 0, case_zero_result, gCaseZeroBuffer);
@@ -311,7 +301,7 @@ int main()
 	// Case #5 - huge map
 	int huge_map_result = FindPath(0, 0, 0, 19, gHugeMap, 20, 20, gHugeBuffer, gHugeBufferSize);
 	LogResult(0, huge_map_result, gHugeBuffer);
-#endif
 	
 	return 0;
 }
+#endif
