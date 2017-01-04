@@ -221,23 +221,36 @@ int FindPath(const int nStartX, const int nStartY,
 		}
 
 		// Select the node with the smallest tentative distance to be marked as the next current node
-		unsigned int max = 1000;
-		for (Node* node : unvisited_nodes)
+		const unsigned int const_max = 1000;
+		unsigned int max = const_max;
+
+		// Do this iterator based so erasing this element from the set happens faster
+		std::set<Node*>::iterator to_remove = unvisited_nodes.end();
+		for (std::set<Node*>::iterator it = unvisited_nodes.begin(); it != unvisited_nodes.end(); ++it)
 		{
-			if (node->distance < max)
+			Node* node = *it;
+
+			if (node != nullptr)
 			{
-				max = node->distance;
-				current_node = node;
+				if (node->distance < max)
+				{
+					max = node->distance;
+					current_node = node;
+
+					to_remove = it;
+				}
 			}
 		}
 
 		// Smallest tentative distance unchanged? unreachable path detected
-		if (max == 1000)
+		if (max == const_max)
 			terminate_algorithm_unreachable = true;
 
 		// Erase from the set and mark visited
 		current_node->visited = true;
-		unvisited_nodes.erase(current_node);
+
+		if (to_remove != unvisited_nodes.end())
+			unvisited_nodes.erase(to_remove);
 	}
 	
 	// No suitable path could be found
