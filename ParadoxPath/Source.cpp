@@ -2,7 +2,7 @@
 #include <set>
 #include <vector>
 
-#define PARADOX
+//#define PARADOX
 #ifndef PARADOX
 #include "Maps.h"
 #endif
@@ -276,7 +276,8 @@ int FindPath(const int nStartX, const int nStartY,
 	unsigned int push_index = 0;
 	for (const int i : path)
 	{
-		pOutBuffer[push_index++] = i;
+		if ((int)push_index < nOutBufferSize)
+			pOutBuffer[push_index++] = i;
 	}
 	
 	delete[] nodes;
