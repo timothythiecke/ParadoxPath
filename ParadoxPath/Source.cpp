@@ -2,7 +2,7 @@
 #include <set>
 #include <vector>
 
-//#define PARADOX
+#define PARADOX
 #ifndef PARADOX
 #include "Maps.h"
 #endif
@@ -18,7 +18,7 @@ struct Node
 		index(0),
 		traversable(false),
 		visited(false),
-		distance(UINT32_MAX)
+		distance(1000)
 	{
 		
 	}
@@ -37,6 +37,7 @@ struct Node
 
 
 
+#ifndef PARADOX
 /*
 Visualizes the nodes in the console window, both the nodes where the path can continue
 and the indices to help with debugging
@@ -108,7 +109,7 @@ void LogResult(const int inStartIndex, const int inStepAmount, const int* inPath
 
 	std::cout << std::endl;
 }
-
+#endif
 
 
 int FindPath(const int nStartX, const int nStartY,
@@ -145,8 +146,10 @@ int FindPath(const int nStartX, const int nStartY,
 		}
 	}
 
+#ifndef PARADOX
 	// Print to help debugging
 	PrintInfo(nodes, nMapWidth, nMapHeight);
+#endif
 
 	//---------------------------
 	// Apply Dijkstra's algorithm
@@ -218,7 +221,7 @@ int FindPath(const int nStartX, const int nStartY,
 		}
 
 		// Select the node with the smallest tentative distance to be marked as the next current node
-		unsigned int max = UINT32_MAX;
+		unsigned int max = 1000;
 		for (Node* node : unvisited_nodes)
 		{
 			if (node->distance < max)
@@ -229,7 +232,7 @@ int FindPath(const int nStartX, const int nStartY,
 		}
 
 		// Smallest tentative distance unchanged? unreachable path detected
-		if (max == UINT32_MAX)
+		if (max == 1000)
 			terminate_algorithm_unreachable = true;
 
 		// Erase from the set and mark visited
