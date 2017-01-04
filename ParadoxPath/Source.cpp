@@ -1,7 +1,6 @@
 #include <iostream>
 #include <set>
 #include <vector>
-#include <limits>
 
 //#define PARADOX
 #ifndef PARADOX
@@ -19,7 +18,7 @@ struct Node
 		index(0),
 		traversable(false),
 		visited(false),
-		distance(std::numeric_limits<unsigned int>::infinity())
+		distance(UINT32_MAX)
 	{
 		
 	}
@@ -219,7 +218,7 @@ int FindPath(const int nStartX, const int nStartY,
 		}
 
 		// Select the node with the smallest tentative distance to be marked as the next current node
-		unsigned int max = std::numeric_limits<unsigned int>::infinity();
+		unsigned int max = UINT32_MAX;
 		for (Node* node : unvisited_nodes)
 		{
 			if (node->distance < max)
@@ -230,7 +229,7 @@ int FindPath(const int nStartX, const int nStartY,
 		}
 
 		// Smallest tentative distance unchanged? unreachable path detected
-		if (max == std::numeric_limits<unsigned int>::infinity())
+		if (max == UINT32_MAX)
 			terminate_algorithm_unreachable = true;
 
 		// Erase from the set and mark visited
@@ -259,9 +258,9 @@ int FindPath(const int nStartX, const int nStartY,
 
 	// Then copy the sequence into the output buffer, and keep track of how many elements there are in the sequence
 	unsigned int push_index = 0;
-	for (int i = 0; i < nOutBufferSize; ++i)
+	for (const int i : path)
 	{
-		pOutBuffer[push_index++] = path[i];
+		pOutBuffer[push_index++] = i;
 	}
 	
 	delete[] nodes;
